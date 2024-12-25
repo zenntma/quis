@@ -1,0 +1,5 @@
+{
+  "level_1": ["Persegi", "Lingkaran"],
+  "level_2": ["Segitiga", "Persegi Panjang"],
+  "level_3": ["Kubus", "Balok", "Prisma"]
+}

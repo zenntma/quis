@@ -1,0 +1,226 @@
+<HomeScreen>:
+
+    FloatLayout:
+        Button:
+            size_hint: None, None
+            size: 50, 50
+            pos_hint: {"x": 0.02, "top": 0.98}
+            background_normal: 'assets/images/account.png'
+            on_release:    
+                app.root.current = 'akun'
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 20
+        padding: 20
+
+        Image:
+            source: 'assets/images/logo game.png'  
+            size_hint: (1, 0.5)
+
+        Label:
+            text: 'Game Belajar Bentuk & Luas'
+            font_size: '24sp'
+            size_hint: (1, 0.2)
+
+        BoxLayout:
+            size_hint: (1, 0.3)
+            spacing: 10
+            Button:
+                text: 'Bermain'
+                font_size: '18sp'
+                on_release:
+                    app.root.current = 'mode_selection'
+
+
+<AkunScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 10
+        padding: 20
+
+        Label:
+            text: 'Masukkan Username dan Password'
+            font_size: '20sp'
+
+        TextInput:
+            hint_text: 'Username'
+            size_hint: (1, 0.6)
+            multiline: False
+
+        TextInput:
+            hint_text: 'Password'
+            size_hint: (1, 0.6)
+            password: True
+            multiline: False
+
+        Button:
+            text: 'Login'
+            size_hint: (1, 0.6)
+            on_release:
+                app.root.current = 'mode_selection'
+
+        Button:
+            text: 'Kembali'
+            size_hint: (1, 0.6)
+            on_release:
+                app.root.current = 'home'
+
+
+<ModeSelectionScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 20
+        padding: 20
+
+        Label:
+            text: 'Pilih Mode Permainan'
+            font_size: '24sp'
+            size_hint: (1, 0.2)
+
+        Button:
+            text: 'Pengenalan Bentuk'
+            font_size: '20sp'
+            size_hint: (1, 0.3)
+            on_release:
+                app.root.current = 'pengenalan_bentuk'
+
+        Button:
+            text: 'Hitung Luas'
+            font_size: '20sp'
+            size_hint: (1, 0.3)
+            on_release:
+                app.root.current = 'hitung_luas'
+
+        Button:
+            text: 'Kembali ke Halaman Utama'
+            font_size: '18sp'
+            size_hint: (1, 0.2)
+            on_release:
+                app.root.current = 'home'
+
+
+<PengenalanBentukScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 10
+        padding: 20
+
+        Label:
+            text: root.question_text
+            font_size: '24sp'
+            size_hint: (1, 0.3)
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: (1, 0.6)
+
+            Image:
+                source: root.question_image
+                allow_stretch: True
+                keep_ratio: True
+                size_hint: (0.5, 1)
+
+        GridLayout:
+            cols: 2
+            spacing: 10
+            size_hint: (1, 0.4)
+
+            Button:
+                text: root.choices[0] if len(root.choices) > 0 else ""
+                font_size: '20sp'
+                on_release:
+                    root.check_answer(root.choices[0])
+
+            Button:
+                text: root.choices[1] if len(root.choices) > 1 else ""
+                font_size: '20sp'
+                on_release:
+                    root.check_answer(root.choices[1])
+
+            Button:
+                text: root.choices[2] if len(root.choices) > 2 else ""
+                font_size: '20sp'
+                on_release:
+                    root.check_answer(root.choices[2])
+
+            Button:
+                text: root.choices[3] if len(root.choices) > 3 else ""
+                font_size: '20sp'
+                on_release:
+                    root.check_answer(root.choices[3])
+
+        Button:
+            text: 'Kembali ke Pilih Mode'
+            font_size: '18sp'
+            size_hint: (1, 0.2)
+            on_release:
+                app.root.current = 'mode_selection'
+<HitungLuasScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 10
+        padding: 20
+
+        Label:
+            text: 'Hitung Luas'
+            font_size: '24sp'
+
+        Spinner:
+            id: shape_spinner
+            text: 'Pilih Bangun'
+            values: ['Persegi', 'Lingkaran', 'Segitiga', 'Persegi Panjang', 'kubus', 'Balok','Prisma']
+            size_hint: (1, 0.2)
+            on_text: root.on_shape_selected(self.text)
+
+        Button:
+            text: 'Selanjutnya'
+            size_hint: (1, 0.2)
+            on_release:
+                app.root.current = 'input_screen'
+                app.root.get_screen('input_screen').prepare_inputs(root.selected_shape)
+
+        Button:
+            text: 'Kembali ke Pilih Mode'
+            size_hint: (1, 0.2)
+            on_release:
+                app.root.current = 'mode_selection'
+<InputScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 10
+        padding: 20
+
+        Label:
+            id: input_label
+            text: 'Masukkan nilai'
+            font_size: '24sp'
+            size_hint: (1, 0.2)
+
+        Image:
+            id: shape_image
+            source: root.input_image  # Menggunakan gambar dari properti input_image
+            allow_stretch: True
+            size_hint: (1, 0.8)
+
+        TextInput:
+            id: input_field
+            multiline: False
+            size_hint: (1, 0.2)
+
+        Button:
+            text: 'Hitung'
+            size_hint: (1, 0.2)
+            on_release:
+                root.calculate_result()
+
+        Label:
+            text: root.result_text
+            font_size: '20sp'
+            size_hint: (1, 0.2)
+
+        Button:
+            text: 'Kembali'
+            size_hint: (1, 0.2)
+            on_release:
+                app.root.current = 'hitung_luas'
+
